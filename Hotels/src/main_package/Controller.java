@@ -32,5 +32,19 @@ public class Controller {
         view.handleClick(View.UpgradeProperty, (button) -> {
             this.model.perform(Model.UpgradeProperty);
         });
+        
+        // Cheat mode button
+        view.handleClick(View.CheatMode, (button) -> {
+            this.model.toggleCheatMode();
+        });
+        
+        // Set Move button
+        view.handleClick(View.SetMove, (button) -> {
+        	int entry = this.view.setMove(this.model);
+        	if (entry == -1) {
+        		entry = 0;
+        	}
+        	this.model.movePlayer(entry);
+        });
     }
 }

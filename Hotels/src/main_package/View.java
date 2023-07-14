@@ -16,7 +16,10 @@ public class View extends JFrame implements Observer {
     public final static int EndTurn = 1;
     public final static int BuyProperty = 2;
     public final static int UpgradeProperty = 3;
-
+    public final static int CheatMode = 4;
+    public final static int SetMove = 5;
+    
+    
     // Tile in the view
     public static class Tile {
         public final int position;              // Position of tile in Model
@@ -81,7 +84,7 @@ public class View extends JFrame implements Observer {
 
         setTitle("Hotels Board");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        
         // Create the tile panels array
         this.tiles = new Tile[40];
  
@@ -89,7 +92,7 @@ public class View extends JFrame implements Observer {
         this.players = new JLabel[4];
         
         // Create the button panels array
-        this.buttons = new JButton[4];
+        this.buttons = new JButton[6];
         
         // Current player turn
         this.playerTurn = new JLabel(model.getCurrentPlayer().name);
@@ -138,14 +141,24 @@ public class View extends JFrame implements Observer {
         constraints.gridy = 6;
         constraints.gridheight = 1;
         {
-            String[] buttonNames = new String[4];
+            String[] buttonNames = new String[6];
             buttonNames[RollDie] = "Roll Die";
             buttonNames[EndTurn] = "End Turn";
             buttonNames[BuyProperty] = "Buy";
             buttonNames[UpgradeProperty] = "Upgrade";
+            buttonNames[CheatMode] = "Cheat Mode";
+            buttonNames[SetMove] = "Set Move";
+            
             for (int i = 0; i < 4; i++) {
                 constraints.gridx = i * 2 + 1;
                 boardPanel.add(this.buttons[i] = new JButton(buttonNames[i]),
+                        constraints);
+            }
+            constraints.gridy = 2;
+            constraints.gridheight = 1;
+            for (int i = 0; i < 2; i++) {
+                constraints.gridx = i * 2 + 1;
+                boardPanel.add(this.buttons[i + 4] = new JButton(buttonNames[i + 4]),
                         constraints);
             }
         }
@@ -183,6 +196,14 @@ public class View extends JFrame implements Observer {
 
         pack();
         setLocationRelativeTo(null);
+    }
+    
+    public int setMove(Model model) {
+    	Integer possibleTiles[] = new Integer[12];
+    	for (int i = 0; i < 12; i++) {
+    		possibleTiles[i] = model.getCurrentPlayer().getPosition() + i;
+    	}
+    	return JOptionPane.showOptionDialog(null, "Select a tile to go to.", "Set Move", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, possibleTiles, possibleTiles[0]);
     }
 
     @Override
@@ -222,6 +243,8 @@ public class View extends JFrame implements Observer {
         this.buttons[1].setEnabled((actions & Model.EndTurn) != 0);
         this.buttons[2].setEnabled((actions & Model.BuyProperty) != 0);
         this.buttons[3].setEnabled((actions & Model.UpgradeProperty) != 0);
+        this.buttons[4].setEnabled(true);
+        this.buttons[5].setEnabled(model.cheatMode);
     }
 
     // controller interface
@@ -243,7 +266,7 @@ public class View extends JFrame implements Observer {
         }
     }
     public void handleClick(int button, ClickHandler handler) {
-        assert button >= 0 && button < 4: "Invalid button";
+        assert button >= 0 && button < 6: "Invalid button";
         this.buttons[button].addActionListener(
                 new ButtonListener(button, handler));
     }

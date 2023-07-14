@@ -124,7 +124,7 @@ public class Model extends Observable {
     private Property[] tiles;    // array of nTiles tiles
     private int[] changedTiles;  // changed tiles
     public boolean cheatMode;	 // if player has access to cheat move
-    public int diceRoll;		 	 // the die roll
+    public int diceRoll;		 // the die roll
     
     // Get the group given a group name
     public Group group(char group) {
@@ -307,7 +307,14 @@ public class Model extends Observable {
     	}
     	return false;
     }
-
+    
+    // Toggle cheat mode
+    public void toggleCheatMode() {
+    	cheatMode = !cheatMode;
+    	setChanged();
+        notifyObservers();
+    }
+    
     // Move player
     public void movePlayer() {
         Player player = this.players[currentPlayer];
@@ -354,7 +361,6 @@ public class Model extends Observable {
             }
         }
         this.players[currentPlayer].hasMoved = true;
-        diceRoll = -1;
         
         // Refresh view
         setChanged();

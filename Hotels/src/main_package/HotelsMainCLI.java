@@ -86,7 +86,7 @@ public class HotelsMainCLI {
                 // Move to specific tile for testing purposes
                 } else if (command.equals("setmove")) {
                 	if (model.cheatMode) {
-                		System.out.print("position (must within 12 tiles): ");
+                		System.out.print("position (must be within 12 tiles): ");
                     	int position = entry.nextInt();
                     	entry.nextLine();
                     	if (position < 0 || !model.accessibleTiles(position)) {
@@ -239,7 +239,7 @@ public class HotelsMainCLI {
             command = entry.nextLine();
             command.trim();
             if (command.equals("y") || command.equals("Y")) {
-            	model.cheatMode = true;
+            	model.toggleCheatMode();
             }
         }
 
