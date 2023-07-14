@@ -68,8 +68,12 @@ public class HotelsMainCLI {
                 displayStatus(model);
 
                 // Prompt the user for a pre-move command
-                System.out.print("Command (roll/setmove/players/tiles): ");
-
+                if (model.cheatMode) {
+                	System.out.print("Command (roll/setmove/players/tiles): ");
+                }
+                else {
+                	System.out.print("Command (roll/players/tiles): ");
+                }
                 // Parse the command
                 command = entry.nextLine();
 
